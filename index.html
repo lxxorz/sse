@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .container {
+    display: grid;
+    place-items: center;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <button id="stop">toggle</button>
+    <ul class="list"></ul>
+  </div>
+  <script type="module" defer>
+    const event_source = new EventSource('http://localhost:4000/sse');
+    const btn = document.querySelector('#stop');
+
+    btn.addEventListener('click', () => {
+      event_source.close();
+    })
+    event_source.addEventListener('random', data => {
+      const list = document.querySelector('.list');
+      const li = document.createElement('li');
+      li.textContent = data.data;
+      list.appendChild(li);
+    })
+  </script>
+</body>
+</html>
